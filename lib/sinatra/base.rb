@@ -227,6 +227,11 @@ module Sinatra
       render :erb, template, options, locals
     end
 
+    def liquid(template, options={}, locals={})
+      require 'liquid'
+      render :liquid, template, options, locals
+    end
+
     def haml(template, options={}, locals={})
       require 'haml' unless defined? ::Haml::Engine
       render :haml, template, options, locals
@@ -304,7 +309,17 @@ module Sinatra
       @_out_buf, result = original_out_buf, @_out_buf
       result
     end
-
+    
+    def render_liquid(template, data, options, locals, &block)
+      tem=::Liquid::Template.parse(data)
+      content=''
+      if(not block.nil?)
+        content = yield
+      end
+      locals['content']=content
+      result = tem.render(locals)
+      result
+    end
     def render_haml(template, data, options, locals, &block)
       ::Haml::Engine.new(data, options).render(self, locals, &block)
     end

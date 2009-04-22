@@ -10,7 +10,7 @@ class LiquidTest < Test::Unit::TestCase
   end
 
   it 'renders inline Liquid strings' do
-    liquid_app { liquid '<%= 1 + 1 %>' }
+    liquid_app { liquid '{{ 1|plus:1 }}' }
     assert ok?
     assert_equal '2', body
   end
@@ -23,7 +23,7 @@ class LiquidTest < Test::Unit::TestCase
 
   it 'takes a :locals option' do
     liquid_app {
-      locals = {:foo => 'Bar'}
+      locals = {'foo' => 'Bar'}
       liquid '{{ foo }}', :locals => locals
     }
     assert ok?
@@ -32,7 +32,7 @@ class LiquidTest < Test::Unit::TestCase
 
   it "renders with inline layouts" do
     mock_app {
-      layout { 'THIS. IS. {{ content.upcase }}!' }
+      layout { 'THIS. IS. {{ content|upcase }}!' }
       get('/') { liquid 'Sparta' }
     }
     get '/'
