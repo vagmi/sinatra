@@ -144,6 +144,17 @@ and overridden on an individual basis.
 
 Renders <tt>./views/index.erb</tt>
 
+=== Liquid Templates
+
+Liquid templates need the liquid gem installed. Since liquid is meant to be a safe language, you would have to do {{ content }} in your layouts instead of an yield.
+
+  get '/' do
+    liquid :index
+  end
+
+Renders <tt>./views/index.liquid</tt>
+ 
+
 === Builder Templates
 
 The builder gem/library is required to render builder templates:
